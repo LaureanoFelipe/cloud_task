@@ -24,7 +24,7 @@ def load_sql_file(filepath, db_params):
 
 # Parâmetros de conexão
 db_params = {
-      'host': 'dpg-crnba1g8fa8c738cov20-a.oregon-postgres.render.com',
+    'host': 'dpg-crnba1g8fa8c738cov20-a.oregon-postgres.render.com',
     'database': 'db_qcv8',
     'user': 'teste',
     'password': 'OgX9bqYUwAvDE8eViKWbu142dykbTt8K'
