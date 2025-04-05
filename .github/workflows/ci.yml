@@ -11,16 +11,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        scenario: 
-        - ubuntu-20.04
+        scenario:
+          - centos-8
+          - debian-10
+          - fedora-34
+          - oraclelinux-8
+          - ubuntu-20.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
         with:
           path: "${{ github.repository }}"
 
       - name: Set up Python 3.
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v2
         with:
           python-version: '3.x'
 
@@ -35,15 +39,15 @@ jobs:
 
       - name: Install ansible-lint.
         run: pip3 install ansible-lint                     
- 
+
       - name: Molecule
-        uses: gofrolist/molecule-action@v2
+        uses: gofrolist/molecule-action@v1
         with:
-          molecule_options: --debug --base-config ../../tests/molecule/base.yml
+          molecule_options: --debug --base-config molecule/_shared/base.yml
           molecule_command: test
-          molecule_working_dir: ${{ github.repository }}
+          molecule_args: --scenario-name ${{ matrix.scenario }}
+          molecule_working_dir: "${{ github.repository }}"
         env:
-          PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
       - name: Run Molecule tests.
         run: molecule -verbose test
@@ -51,5 +55,4 @@ jobs:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_DISTRO: ${{ matrix.distro }}
-        working-directory: "${{ github.repository }}"          
-
+        working-directory: "${{ github.repository }}" 
